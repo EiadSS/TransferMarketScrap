@@ -19,9 +19,15 @@ export default function Bar({ setShow, setPlayer, load, setLoad }) {
     setPlayer(message)
   }
 
+  const checkEnter = (event) => {
+    if(event.key == 'Enter'){
+      click()
+    }
+  }
+
   return (
     <div className="bar">
-      <Input type="search" placeholder="Marcus Rashford" className="search-bar" onChange={handleChange} />
+      <Input type="search" placeholder="Marcus Rashford" className="search-bar" onChange={handleChange} onKeyDown={checkEnter}/>
       {!load &&
         (<Button className="Search-Button" onClick={click} color="primary" variant="ghost">
           Search
