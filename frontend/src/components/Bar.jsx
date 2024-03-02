@@ -20,20 +20,20 @@ export default function Bar({ setShow, setPlayer, load, setLoad }) {
   }
 
   const checkEnter = (event) => {
-    if(event.key == 'Enter'){
+    if (event.key == 'Enter') {
       click()
     }
   }
 
   return (
     <div className="bar">
-      <Input type="search" placeholder="Marcus Rashford" className="search-bar" onChange={handleChange} onKeyDown={checkEnter}/>
+      <Input type="search" placeholder="Marcus Rashford" className="search-bar" onChange={handleChange} onKeyDown={checkEnter} />
       {!load &&
         (<Button className="Search-Button" onClick={click} color="primary" variant="ghost">
           Search
         </Button>)
       }
-      {load&&(<Button className="load-button" onClick={click} color="primary" variant="ghost" isLoading>
+      {load && (<Button className="load-button" onClick={click} color="primary" variant="ghost" isLoading>
         Search
       </Button>)}
     </div>

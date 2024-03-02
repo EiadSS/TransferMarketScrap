@@ -1,5 +1,5 @@
 import React from "react";
-import {Tabs, Tab, Card, CardBody, CardHeader} from "@nextui-org/react";
+import {Tabs, Tab} from "@nextui-org/react";
 
 export default function Nav() {
   let tabs = [

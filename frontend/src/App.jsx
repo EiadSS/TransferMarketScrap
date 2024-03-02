@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Bar from "./components/Bar";
 import PlayerPic from "./components/PlayerPic";
 import Profile from "./Body/Profile";
+import Stats from "./Body/Stats";
 import Nav from "./components/Nav";
 
 export default function App() {
@@ -18,13 +19,14 @@ export default function App() {
   return (
     <div className="page">
       <h1>Welvome To The TransferMarket</h1>
-      <Bar setShow={setShow} setPlayer={setPlayer} load = {load} setLoad = {setLoad}/>
+      <Bar setShow={setShow} setPlayer={setPlayer} load={load} setLoad={setLoad} />
       {show &&
         (
           <div className="three-guys">
-            <PlayerPic picture={picture} load = {load}/>
+            <PlayerPic picture={picture} load={load} />
             <Nav />
-            <Profile setPicture={setPicture} player={player} setLoad={setLoad} load = {load}/>
+            {/* <Profile setPicture={setPicture} player={player} setLoad={setLoad}/> */}
+            <Stats player={player} setLoad={setLoad}/>
           </div>)
       }
     </div>
