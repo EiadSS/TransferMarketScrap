@@ -9,7 +9,6 @@ const Profile = ({ profile }) => {
         let temp1 = Object.values(profile);
         let temp2 = Object.keys(profile);
         temp2.shift();
-        temp2.pop();
         temp1.shift();
         for (let i = 0; i < temp2.length; i++) {
             temp[0][temp2[i]] = temp1[i];

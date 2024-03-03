@@ -20,14 +20,28 @@ export default function Nav({ player, setLoad, setPicture }) {
   }, [player]);
 
   useEffect(() => {
-    if (profile) {
-      setPicture(profile.picture);
+    async function fetchAdditionalData() {
+      if (profile) {
+        setPicture(profile.picture);
+        const id = '/' + profile.id;
+        try {
+          await helper('stats', player, id);
+          await helper('injuries', player, id);
+          await helper('value', player, id);
+          await helper('transfers', player, id);
+        } catch (error) {
+          console.error('Error fetching additional data:', error);
+        }
+      }
     }
-  }, [profile, setPicture]);
+  
+    fetchAdditionalData();
+  }, [profile]);
+  
 
-  async function helper(request, player) {
+  async function helper(request, player, id) {
     try {
-      const response = await fetch('http://127.0.0.1:8000/app/' + request + '/' + player);
+      const response = await fetch('http://127.0.0.1:8000/app/' + request + '/' + player + id);
       if (!response.ok) {
         throw new Error('Failed to fetch profile data');
       }
@@ -54,17 +68,11 @@ export default function Nav({ player, setLoad, setPicture }) {
   }
 
   async function fetchData() {
-    setProfile(null)
-    setStats(null)
-    helper("profile", player)
-    helper("stats", player)
-    helper("injuries", player)
-    helper("value", player)
-    helper("transfers", player)
+    helper('profile', player, '')
+
   }
 
-
-  function handShow(id) {
+  function handShow(section) {
     const components = {
       Profile,
       Stats,
@@ -73,16 +81,16 @@ export default function Nav({ player, setLoad, setPicture }) {
       Transfers
     };
 
-    const Component = components[id];
+    const Component = components[section];
 
     if (Component) {
-      if (id === "Profile") {
+      if (section === "Profile") {
         return <Component setPicture={setPicture} player={player} setLoad={setLoad} profile={profile} />;
-      } else if (id === "Stats") {
+      } else if (section === "Stats") {
         return <Component player={player} setLoad={setLoad} profile={stats} />;
-      } else if (id === "Injuries") {
+      } else if (section === "Injuries") {
         return <Component player={player} setLoad={setLoad} profile={injuries} />;
-      } else if (id === "Value") {
+      } else if (section === "Value") {
         return <Component player={player} setLoad={setLoad} profile={value} />;
       } else {
         return <Component player={player} setLoad={setLoad} profile={transfers} />;
