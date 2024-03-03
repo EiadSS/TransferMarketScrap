@@ -21,6 +21,8 @@ options.add_argument('--ignore-certificate-errors')
 options.add_argument('--ignore-ssl-errors')
 driver = webdriver.Chrome(options=options, service=service)
 
+id = 0
+
 
 def index(request, name):
     return HttpResponse("Hello, world. You're at the polls index.")
@@ -29,8 +31,8 @@ def index(request, name):
 def profile(request, name: str):
     name = name.split(" ")
     firstName, lastName = name[0], name[1]
-
-    url = f"https://www.transfermarkt.com/{firstName}-{lastName}/profil/spieler/{findId(firstName, lastName)}"
+    findId(firstName, lastName)
+    url = f"https://www.transfermarkt.com/{firstName}-{lastName}/profil/spieler/{id}"
 
     page = requests.get(url, headers=headers)
     soup = BeautifulSoup(page.text, "html.parser")
@@ -71,7 +73,12 @@ def injuries(request, name: str):
     table = [["Season", "Injury", "From", "until", "Days", "Games missed"]]
 
     driver.get(
-        f'https://www.transfermarkt.us/{name[0]}-{name[1]}/verletzungen/spieler/{findId(name[0], name[1])}/plus/1')
+        f'https://www.transfermarkt.us/{name[0]}-{name[1]}/verletzungen/spieler/{id}/plus/1')
+
+    WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.XPATH,
+                                        '//*[@id="yw1"]/table/tbody'))
+    )
 
     rows = driver.find_element(By.XPATH,
                                '//*[@id="yw1"]/table/tbody').find_elements(
@@ -93,12 +100,17 @@ def stats(request, name: str):
     name = name.split(" ")
 
     driver.get(
-        f"https://www.transfermarkt.us/{name[0]}-{name[1]}/leistungsdatendetails/spieler/{findId(name[0], name[1])}/saison//verein/0/liga/0/wettbewerb//pos/0/trainer_id/0")
+        f"https://www.transfermarkt.us/{name[0]}-{name[1]}/leistungsdatendetails/spieler/{id}/saison//verein/0/liga/0/wettbewerb//pos/0/trainer_id/0")
 
     table = {"header": ["Season", "Competition", "Club", "Appearances", "Goals",
                         "Assists", "Y-YR-R", "Minutes"]}
 
     body = []
+
+    WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.XPATH,
+                                        '//*[@id="yw1"]/table/tbody'))
+    )
 
     rows = driver.find_element(By.XPATH,
                                '//*[@id="yw1"]/table/tbody').find_elements(
@@ -130,7 +142,7 @@ def value(request, name: str):
     name = name.split(" ")
 
     value = {"result": requests.get(
-        f"https://transfermarkt-api.vercel.app/players/{findId(name[0], name[1])}/market_value").json()[
+        f"https://transfermarkt-api.vercel.app/players/{id}/market_value").json()[
         'marketValueHistory']}
 
     return JsonResponse(value)
@@ -140,9 +152,14 @@ def transfers(request, name: str):
     name = name.split(" ")
 
     driver.get(
-        f"https://www.transfermarkt.com/{name[0]}-{name[1]}/transfers/spieler/{findId(name[0], name[1])}")
+        f"https://www.transfermarkt.com/{name[0]}-{name[1]}/transfers/spieler/{id}")
 
     table = []
+
+    WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.XPATH,
+                                        '//*[@id="main"]/main/div[2]/div[1]/tm-transfer-history/div'))
+    )
 
     rows = driver.find_element(By.XPATH,
                                '//*[@id="main"]/main/div[2]/div[1]/tm-transfer-history/div').find_elements(
@@ -171,4 +188,5 @@ def findId(firstName, lastName):
                                         '//*[@id="yw0"]/table/tbody/tr/td[1]/table/tbody/tr[1]/td[2]/a'))
     )
 
-    return element.get_attribute("href").split('/')[-1]
+    global id
+    id = element.get_attribute("href").split('/')[-1]
