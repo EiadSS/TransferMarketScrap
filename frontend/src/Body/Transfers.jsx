@@ -34,11 +34,11 @@ const Transfers = ({ player, setLoad }) => {
             temp.push({
                 key: i,
                 Season: item[0],
-                Injury: item[1],
-                From: item[2],
-                until: item[3],
-                Days: item[4],
-                "Games missed": item[5]
+                Date: item[1],
+                Left: item[2],
+                Joined: item[3],
+                "Market Value": item[4],
+                Fee: item[5]
             });
             i++;
         });
@@ -54,24 +54,24 @@ const Transfers = ({ player, setLoad }) => {
                 label: "Season"
             },
             {
-                key: "Injury",
-                label: "Injury"
+                key: "Date",
+                label: "Date"
             },
             {
-                key: "From",
-                label: "From"
+                key: "Left",
+                label: "Left"
             },
             {
-                key: "until",
-                label: "until"
+                key: "Joined",
+                label: "Joined"
             },
             {
-                key: "Days",
-                label: "Days"
+                key: "Market Value",
+                label: "Market Value"
             },
             {
-                key: "Games missed",
-                label: "Games missed"
+                key: "Fee",
+                label: "Fee"
             }
         ];
 
