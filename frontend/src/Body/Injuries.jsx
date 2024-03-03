@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Card, Skeleton } from "@nextui-org/react";
 
-const Stats = ({ player, setLoad }) => {
+const Injuries = ({ player, setLoad }) => {
     const [profile, setProfile] = useState(null); // Initialize profile state properly
 
     useEffect(() => {
@@ -11,7 +11,7 @@ const Stats = ({ player, setLoad }) => {
     async function fetchData() {
         setProfile(null)
         try {
-            const response = await fetch('http://127.0.0.1:8000/app/stats/' + player);
+            const response = await fetch('http://127.0.0.1:8000/app/injuries/' + player);
             if (!response.ok) {
                 throw new Error('Failed to fetch profile data');
             }
@@ -27,18 +27,18 @@ const Stats = ({ player, setLoad }) => {
         let temp = []
 
         let i = 1
+        let toLoop = profile.result
+        toLoop.shift()
 
-        profile.body.forEach(function (item) {
+        toLoop.forEach(function (item) {
             temp.push({
                 key: i,
                 Season: item[0],
-                Competition: item[1],
-                Club: item[2],
-                Appearances: item[3],
-                Goals: item[4],
-                Assists: item[5],
-                "YYRR": item[6],
-                Minutes: item[7],
+                Injury: item[1],
+                From: item[2],
+                until: item[3],
+                Days: item[4],
+                "Games missed": item[5]
             });
             i++;
         });
@@ -48,13 +48,32 @@ const Stats = ({ player, setLoad }) => {
 
     function handleCol() {
         if (!profile) return []; // Handle case where profile is not yet fetched
-        let temp = [];
-        profile.header.forEach(function (item) {
-            temp.push({
-                key: item,
-                label: item
-            });
-        });
+        let temp = [
+            {
+                key: "Season",
+                label: "Season"
+            },
+            {
+                key: "Injury",
+                label: "Injury"
+            },
+            {
+                key: "From",
+                label: "From"
+            },
+            {
+                key: "until",
+                label: "until"
+            },
+            {
+                key: "Days",
+                label: "Days"
+            },
+            {
+                key: "Games missed",
+                label: "Games missed"
+            }
+        ];
 
         return temp;
     }
@@ -99,4 +118,4 @@ const Stats = ({ player, setLoad }) => {
         </div>
     );
 }
-export default Stats;
+export default Injuries;

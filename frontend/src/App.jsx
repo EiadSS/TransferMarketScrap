@@ -4,6 +4,8 @@ import PlayerPic from "./components/PlayerPic";
 import Profile from "./Body/Profile";
 import Stats from "./Body/Stats";
 import Nav from "./components/Nav";
+import Injuries from "./Body/Injuries";
+import Value from "./Body/Value";
 
 export default function App() {
 
@@ -26,7 +28,9 @@ export default function App() {
             <PlayerPic picture={picture} load={load} />
             <Nav />
             {/* <Profile setPicture={setPicture} player={player} setLoad={setLoad}/> */}
-            <Stats player={player} setLoad={setLoad}/>
+            {/* <Stats player={player} setLoad={setLoad}/> */}
+            {/* <Injuries player={player} setLoad={setLoad} /> */}
+            {/* <Value player={player} setLoad={setLoad}/> */}
           </div>)
       }
     </div>

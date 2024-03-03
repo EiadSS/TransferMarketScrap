@@ -155,7 +155,10 @@ def transfers(request, name: str):
         if temp:
             table.append(temp)
 
+    print(table)
+
     result = {"result": table}
+
     return JsonResponse(result)
 
 
