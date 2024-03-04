@@ -85,19 +85,10 @@ button:focus-visible {
 
 .search-bar {
   width: 500px;
-  color: #FF007F;
+  color: white;
   font-weight: #FF007F;
 }
 
-.bar {
-  display: flex;
-  flex-direction: row;
-  text-align: center;
-  align-items: center;
-  justify-content: space-between;
-  width: 600px;
-  background-color: #1a1a1a;
-}
 
 .Search-Button {
   height: 50px;
@@ -114,14 +105,34 @@ button:focus-visible {
   font-weight: #2621A6;
 }
 
+:root {
+  --gradient: linear-gradient(90deg, #191970, #2E3192 ,  #1BFFFF);
+  --back: linear-gradient(90deg, #4E65FF, #92EFFD);
+  --clr-1: #052b2f;
+  --clr-2: #073438;
+  --clr-3: #0e4b50;
+  --clr-4: #2d8f85;
+  --clr-5: #637c54;
+
+}
+
+
 h1 {
   font-size: 72px;
-  background: -webkit-linear-gradient(#2621A6, #FFFFFF);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  background-image: var(--gradient);
+  background-clip: text;
+  color: transparent;
+  background-size: 400%;
+  animation: bg-animation 20s infinite alternate;
 
   margin-top: 25px;
   margin-bottom: 25px;
+}
+
+@keyframes bg-animation {
+  0% {background-position: left}
+  50% {background-position: right}
+  100% {background-position: left}
 }
 
 .three-guys {
@@ -159,3 +170,58 @@ div {
   flex-direction: column;
   justify-content: center;
 }
+
+@property --rotate {
+  syntax: "<angle>";
+  initial-value: 132deg;
+  inherits: false;
+}
+
+.bar {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  align-items: center;
+  justify-content: space-between;
+  width: 600px;
+  background-color: #1a1a1a;
+}
+
+/* @property --gradient-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes rotation {
+  0% {--gradient-angle: 0deg};
+  100% {--gradient-angle: 360deg};
+}
+
+[title = glow]{
+  background: #1a1a1a;
+  border-radius: 0.5em;
+  position: relative;
+}
+
+[title = glow]::before,
+[title = glow]::after{
+  z-index: -.9;
+  inset: -.5rem;
+  content: "";
+  filter: blur(10rem);
+  position: absolute;
+  inset: 0;
+  background: #1a1a1a;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--gradient-angle),
+    var(--clr-3),
+    var(--clr-4),
+    var(--clr-5),
+    var(--clr-4),
+    var(--clr-3));
+    border-radius: inherit;
+    animation: rotation 20s linear infinite alternate;
+} */
+

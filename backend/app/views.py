@@ -157,18 +157,25 @@ def transfers(request, name: str, playerId: str):
                                         '//*[@id="main"]/main/div[2]/div[1]/tm-transfer-history/div'))
     )
 
+    WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.XPATH,
+                                        '//*[@id="main"]/main/div[2]/div[1]/tm-transfer-history/div/h2'))
+    )
+
     rows = driver.find_element(By.XPATH,
-                               '//*[@id="main"]/main/div[2]/div[1]/tm-transfer-history/div').find_elements(
-        By.TAG_NAME, 'div')
+                               '//*[@id="main"]/main/div[2]/div[1]/tm-transfer-history/div')
+
+    rows = rows.find_elements(By.TAG_NAME, 'div')
+
+# //*[@id="main"]/main/div[2]/div[1]/tm-transfer-history/div
 
     for row in rows:
+        print(row.get_attribute("textContent"))
         temp = []
         for r in row.find_elements(By.TAG_NAME, 'div'):
             temp.append(r.get_attribute("textContent"))
         if temp:
             table.append(temp)
-
-    print(table)
 
     result = {"result": table}
 

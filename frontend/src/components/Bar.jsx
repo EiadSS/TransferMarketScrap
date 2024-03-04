@@ -26,7 +26,7 @@ export default function Bar({ setShow, setPlayer, load, setLoad }) {
   }
 
   return (
-    <div className="bar">
+    <div className="bar" id="glow">
       <Input type="search" placeholder="Marcus Rashford" className="search-bar" onChange={handleChange} onKeyDown={checkEnter} />
       {!load &&
         (<Button className="Search-Button" onClick={click} color="primary" variant="ghost">
