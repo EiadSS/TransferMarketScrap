@@ -1,11 +1,12 @@
 import React from "react";
-import { Tabs, Tab } from "@nextui-org/react";
+import { Tabs, Tab, Snippet } from "@nextui-org/react";
 import Profile from "../Body/Profile";
 import Stats from "../Body/Stats";
 import Transfers from "../Body/Transfers";
 import Injuries from "../Body/Injuries";
 import Value from "../Body/Value";
 import { useState, useEffect } from "react";
+
 
 export default function Nav({ player, setLoad, setPicture }) {
 
@@ -14,6 +15,8 @@ export default function Nav({ player, setLoad, setPicture }) {
   const [injuries, setInjuries] = useState(null); // Initialize profile state properly
   const [value, setValue] = useState(null)
   const [transfers, setTransfers] = useState(null)
+  const [error, setError] = useState(false)
+
 
   useEffect(() => {
     fetchData();
@@ -34,10 +37,10 @@ export default function Nav({ player, setLoad, setPicture }) {
         }
       }
     }
-  
+
     fetchAdditionalData();
   }, [profile]);
-  
+
 
   async function helper(request, player, id) {
     try {
@@ -64,10 +67,12 @@ export default function Nav({ player, setLoad, setPicture }) {
       setLoad(false)
     } catch (error) {
       console.error('Error fetching data:', error);
+      setError(true)
     }
   }
 
   async function fetchData() {
+    setError(false)
     setProfile(null)
     setStats(null)
     setInjuries(null)
@@ -130,7 +135,7 @@ export default function Nav({ player, setLoad, setPicture }) {
 
   return (
     <div className="info">
-      <div className="flex w-full flex-col" title="tabs">
+      {!error && <div className="flex w-full flex-col" title="tabs">
         <Tabs className="tabs" aria-label="Dynamic tabs" items={tabs} size="lg" color="primary">
           {(item) => (
             <Tab key={item.id} title={item.label}>
@@ -138,7 +143,8 @@ export default function Nav({ player, setLoad, setPicture }) {
             </Tab>
           )}
         </Tabs>
-      </div>
+      </div>}
+      {error && <Snippet hideSymbol hideCopyButton variant="solid">Sorry the player was not found :( Make sure to input the players first name then the last, everything has to be spelled corectly</Snippet>}
     </div>
   );
 }

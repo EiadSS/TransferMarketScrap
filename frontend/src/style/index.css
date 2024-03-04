@@ -106,7 +106,7 @@ button:focus-visible {
 }
 
 :root {
-  --gradient: linear-gradient(90deg, #191970, #2E3192 ,  #1BFFFF);
+  --gradient: linear-gradient(90deg, #191970, #2E3192, #1BFFFF);
   --back: linear-gradient(90deg, #4E65FF, #92EFFD);
   --clr-1: #052b2f;
   --clr-2: #073438;
@@ -130,9 +130,17 @@ h1 {
 }
 
 @keyframes bg-animation {
-  0% {background-position: left}
-  50% {background-position: right}
-  100% {background-position: left}
+  0% {
+    background-position: left
+  }
+
+  50% {
+    background-position: right
+  }
+
+  100% {
+    background-position: left
+  }
 }
 
 .three-guys {
@@ -163,7 +171,7 @@ div {
   width: 800px;
 }
 
-.tabs{
+.tabs {
   align-items: center;
   place-items: center;
   display: flex;
@@ -186,42 +194,3 @@ div {
   width: 600px;
   background-color: #1a1a1a;
 }
-
-/* @property --gradient-angle {
-  syntax: "<angle>";
-  initial-value: 0deg;
-  inherits: false;
-}
-
-@keyframes rotation {
-  0% {--gradient-angle: 0deg};
-  100% {--gradient-angle: 360deg};
-}
-
-[title = glow]{
-  background: #1a1a1a;
-  border-radius: 0.5em;
-  position: relative;
-}
-
-[title = glow]::before,
-[title = glow]::after{
-  z-index: -.9;
-  inset: -.5rem;
-  content: "";
-  filter: blur(10rem);
-  position: absolute;
-  inset: 0;
-  background: #1a1a1a;
-  border-radius: inherit;
-  background: conic-gradient(
-    from var(--gradient-angle),
-    var(--clr-3),
-    var(--clr-4),
-    var(--clr-5),
-    var(--clr-4),
-    var(--clr-3));
-    border-radius: inherit;
-    animation: rotation 20s linear infinite alternate;
-} */
-

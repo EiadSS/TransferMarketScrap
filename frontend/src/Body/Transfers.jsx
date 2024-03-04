@@ -8,7 +8,7 @@ const Transfers = ({ profile }) => {
         let temp = []
 
         let i = 1
-       
+
         profile.result.slice(1).forEach(function (item) {
             temp.push({
                 key: i,

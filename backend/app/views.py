@@ -162,6 +162,11 @@ def transfers(request, name: str, playerId: str):
                                         '//*[@id="main"]/main/div[2]/div[1]/tm-transfer-history/div/h2'))
     )
 
+    WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.XPATH,
+                                        '//*[@id="main"]/main/div[2]/div[1]/tm-transfer-history/div/div'))
+    )
+
     rows = driver.find_element(By.XPATH,
                                '//*[@id="main"]/main/div[2]/div[1]/tm-transfer-history/div')
 
