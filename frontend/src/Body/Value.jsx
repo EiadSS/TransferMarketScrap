@@ -30,7 +30,7 @@ const Value = ({ profile }) => {
                 label: "Date"
             },
             {
-                key: "club Name",
+                key: "clubName",
                 label: "Club Name"
             },
             {

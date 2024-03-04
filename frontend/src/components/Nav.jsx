@@ -68,8 +68,13 @@ export default function Nav({ player, setLoad, setPicture }) {
   }
 
   async function fetchData() {
-    helper('profile', player, '')
-
+    setProfile(null)
+    setStats(null)
+    setInjuries(null)
+    setValue(null)
+    setTransfers(null)
+    await helper('profile', player, '')
+    setLoad(false)
   }
 
   function handShow(section) {

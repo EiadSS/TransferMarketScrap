@@ -8,10 +8,8 @@ const Transfers = ({ profile }) => {
         let temp = []
 
         let i = 1
-        let toLoop = profile.result
-        toLoop.shift()
-
-        toLoop.forEach(function (item) {
+       
+        profile.result.slice(1).forEach(function (item) {
             temp.push({
                 key: i,
                 Season: item[0],
