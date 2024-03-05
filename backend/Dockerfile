@@ -1,7 +1,6 @@
-FROM python:3.11.4-slim-bullseye
+FROM python:latest
 WORKDIR /app
-ENV PYTHONUNBUFFERED 1
-ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED=1
 
 RUN apt-get update && apt-get install -y wget unzip && \
     wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
@@ -11,12 +10,14 @@ RUN apt-get update && apt-get install -y wget unzip && \
 
 RUN pip install --upgrade pip
 
-COPY ./dependencies.txt /app/
+COPY dependencies.txt .
 RUN pip install -r dependencies.txt
 
-COPY . /app
+COPY . .
 
-ENTRYPOINT [ "gunicorn", "core.wsgi", "-b", "0.0.0.0:8000"]
+EXPOSE 8000
+
+CMD ["python", "manage.py", "runserver"]
 
 # Copy the contents of the host's 'backend' directory into the container's '/app' directory
 #COPY backend/ .
