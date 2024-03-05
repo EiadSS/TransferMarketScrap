@@ -10,6 +10,9 @@ COPY backend/ .
 # Change the working directory to '/app/backend'
 WORKDIR /app/backend
 
+# Give execute permission to manage.py
+RUN chmod +x manage.py
+
 # Copy the requirements.txt file into the container
 COPY dependencies.txt .
 
