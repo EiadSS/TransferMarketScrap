@@ -7,13 +7,13 @@ WORKDIR /app
 COPY backend/ .
 
 # Copy the requirements.txt file into the container
-COPY backend/requirements.txt .
+COPY dependencies.txt .
 
 # Upgrade pip
 RUN pip install --upgrade pip
 
 # Install Python dependencies listed in requirements.txt
-RUN pip install --trusted-host pypi.python.org --no-cache-dir -r requirements.txt
+RUN pip install --trusted-host pypi.python.org --no-cache-dir -r dependencies.txt
 
 # Install additional system dependencies (e.g., Google Chrome)
 RUN apt-get update && apt-get install -y wget unzip && \
