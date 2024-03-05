@@ -7,6 +7,9 @@ WORKDIR /app
 # Copy the contents of the host's 'backend' directory into the container's '/app' directory
 COPY backend/ .
 
+# Copy the manage.py file into the container's '/app/backend' directory
+COPY manage.py /app/backend/
+
 # Change the working directory to '/app/backend'
 WORKDIR /app/backend
 
@@ -15,8 +18,6 @@ RUN chmod +x manage.py
 
 # Copy the requirements.txt file into the container
 COPY dependencies.txt .
-
-COPY manage.py .
 
 # Upgrade pip
 RUN pip install --upgrade pip
