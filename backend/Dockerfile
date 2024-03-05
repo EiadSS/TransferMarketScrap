@@ -1,9 +1,9 @@
 FROM python:latest
 
 # Set the working directory inside the container
-WORKDIR /app
+WORKDIR /app/backend
 
-# Copy the contents of the host's 'backend' directory into the container's '/app' directory
+# Copy the contents of the host's 'backend' directory into the container's '/app/backend' directory
 COPY backend/ .
 
 # Copy the requirements.txt file into the container
