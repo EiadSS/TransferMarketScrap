@@ -16,6 +16,8 @@ RUN chmod +x manage.py
 # Copy the requirements.txt file into the container
 COPY dependencies.txt .
 
+COPY manage.py .
+
 # Upgrade pip
 RUN pip install --upgrade pip
 
