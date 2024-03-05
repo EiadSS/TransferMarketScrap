@@ -8,18 +8,25 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from webdriver_manager.chrome import ChromeDriverManager
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
 }
 
-service = Service(
-    executable_path="C:\Program Files\ChromeDriver\chromedriver-win64\chromedriver.exe")
+# service = Service(
+#     executable_path="C:\Program Files\ChromeDriver\chromedriver-win64\chromedriver.exe")
 
 options = webdriver.ChromeOptions()
+options.add_argument("--headless=new")
+options.add_argument("--no-sandbox")
+options.add_argument("--disable-dev-shm-usage")
 options.add_argument('--ignore-certificate-errors')
 options.add_argument('--ignore-ssl-errors')
-driver = webdriver.Chrome(options=options, service=service)
+options.add_argument('--allow-running-insecure-content')
+agent = headers['User-Agent']
+options.add_argument(f'user-agent={agent}')
+driver = webdriver.Chrome(options=options, service=Service(ChromeDriverManager().install()))
 
 
 def index(request):
