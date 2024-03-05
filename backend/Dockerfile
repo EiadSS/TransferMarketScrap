@@ -1,3 +1,7 @@
+# Use the official Python image from Docker Hub
+FROM python:latest
+
+# Set the working directory inside the container
 WORKDIR /app
 
 # Copy the contents of the host's 'backend' directory into the container's '/app' directory
