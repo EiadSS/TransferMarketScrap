@@ -67,7 +67,6 @@ export default function Nav({ player, setLoad, setPicture }) {
       setLoad(false)
     } catch (error) {
       console.error('Error fetching data:', error);
-      setError(true)
     }
   }
 

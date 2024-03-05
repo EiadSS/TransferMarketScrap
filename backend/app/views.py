@@ -21,9 +21,6 @@ options = webdriver.ChromeOptions()
 options.add_argument("--headless=new")
 options.add_argument("--no-sandbox")
 options.add_argument("--disable-dev-shm-usage")
-options.add_argument('--ignore-certificate-errors')
-options.add_argument('--ignore-ssl-errors')
-options.add_argument('--allow-running-insecure-content')
 agent = headers['User-Agent']
 options.add_argument(f'user-agent={agent}')
 driver = webdriver.Chrome(options=options, service=Service(ChromeDriverManager().install()))
@@ -182,7 +179,6 @@ def transfers(request, name: str, playerId: str):
 # //*[@id="main"]/main/div[2]/div[1]/tm-transfer-history/div
 
     for row in rows:
-        print(row.get_attribute("textContent"))
         temp = []
         for r in row.find_elements(By.TAG_NAME, 'div'):
             temp.append(r.get_attribute("textContent"))
