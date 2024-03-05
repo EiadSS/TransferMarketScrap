@@ -1,10 +1,10 @@
-FROM python:latest
+WORKDIR /app
 
-# Set the working directory inside the container
-WORKDIR /app/backend
-
-# Copy the contents of the host's 'backend' directory into the container's '/app/backend' directory
+# Copy the contents of the host's 'backend' directory into the container's '/app' directory
 COPY backend/ .
+
+# Change the working directory to '/app/backend'
+WORKDIR /app/backend
 
 # Copy the requirements.txt file into the container
 COPY dependencies.txt .
