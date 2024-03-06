@@ -24,10 +24,9 @@ RUN apt-get update && \
 RUN pip install --upgrade pip
 
 # Expose the port specified by the environment variable
-EXPOSE $PORT
 
 # Command to run the Gunicorn server
-CMD ["gunicorn", "backend.wsgi:application", "--bind", "0.0.0.0:$PORT"]
+CMD ["gunicorn", "backend.wsgi:application", "--bind", "0.0.0.0:8000"]
 
 
 
