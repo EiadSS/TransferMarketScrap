@@ -1,6 +1,11 @@
 FROM python:latest
 WORKDIR /app
+
+COPY . /app
+
 ENV PYTHONUNBUFFERED=1
+
+RUN pip install --trusted-host pypi.python.org -r dependencies.txt
 
 RUN apt-get update && apt-get install -y wget unzip && \
     wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
@@ -9,11 +14,6 @@ RUN apt-get update && apt-get install -y wget unzip && \
     apt-get clean
 
 RUN pip install --upgrade pip
-
-COPY dependencies.txt .
-RUN pip install -r dependencies.txt
-
-COPY . .
 
 EXPOSE 8000
 
