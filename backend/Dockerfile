@@ -7,8 +7,7 @@ WORKDIR /app
 COPY . /app
 
 # Set environment variables
-ENV PYTHONUNBUFFERED=1 \
-    PORT=8000
+ENV PYTHONUNBUFFERED=1
 
 # Install project dependencies
 RUN pip install --no-cache-dir -r dependencies.txt
@@ -24,8 +23,8 @@ RUN apt-get update && \
 # Upgrade pip
 RUN pip install --upgrade pip
 
-# Expose the port on which the Django development server will run
+# Expose the port specified by the environment variable
 EXPOSE $PORT
 
-# Command to run the Django development server
-CMD ["python", "manage.py", "runserver", "0.0.0.0:$PORT"]
+# Command to run the Gunicorn server
+CMD ["gunicorn", "backend.wsgi:application", "--bind", "0.0.0.0:$PORT"]
