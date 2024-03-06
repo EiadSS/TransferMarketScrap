@@ -15,8 +15,6 @@ RUN apt-get update && apt-get install -y wget unzip && \
 
 RUN pip install --upgrade pip
 
-EXPOSE 8000
-
 CMD ["python", "manage.py", "runserver"]
 
 #ARG PORT=443
