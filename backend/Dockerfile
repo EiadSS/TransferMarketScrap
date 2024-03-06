@@ -21,10 +21,26 @@
 
 ARG PORT=443
 FROM cypress/browsers:latest
-RUN apt-get install python3 -y
+
+# Install Python3 and pip
+RUN apt-get update && apt-get install -y python3 python3-pip
+
+# Display Python user base directory
 RUN echo $(python3 -m site --user-base)
+
+# Set the PATH environment variable to include the user base directory
+ENV PATH /root/.local/bin:${PATH}
+
+# Copy dependencies file
 COPY dependencies.txt .
-ENV PATH /home/root/.local/bin:${PATH}
-RUN apt-get update && apt-get install -y python3-pip && pip install -r dependencies.txt
+
+# Install Python dependencies
+RUN pip3 install --user -r dependencies.txt
+
+# Copy the application code
 COPY . .
-CMD uvicorn main:app --host 0.0.0.0 --port $PORT
+
+# Run the application using uvicorn
+CMD python manage.py runserver 0.0.0.0:$PORT
+
+
