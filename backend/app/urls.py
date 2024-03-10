@@ -8,5 +8,5 @@ urlpatterns = [
     path("injuries/<str:name>/<str:playerId>", views.injuries, name="injuries"),
     path("stats/<str:name>/<str:playerId>", views.stats, name="stats"),
     path("value/<str:name>/<str:playerId>", views.value, name="value"),
-    path("transfers/<str:name>/<str:playerId>", views.transfers, name="transfers"),
+    path("transfers/<str:name>", views.transfers, name="transfers"),
 ]

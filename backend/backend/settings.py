@@ -60,9 +60,9 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
-    "http://127.0.0.1:8000"
-    "https://transfer-market-scrap.vercel.app"
-    "https://transfermarketscrap.onrender.com/"
+    "http://127.0.0.1:8000",
+    "https://transfer-market-scrap.vercel.app",
+    # "https://transfermarketscrap.onrender.com/",
 ]
 
 ROOT_URLCONF = 'backend.urls'

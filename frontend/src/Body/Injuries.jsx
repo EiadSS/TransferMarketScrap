@@ -8,13 +8,13 @@ const Injuries = ({ profile }) => {
 
         let i = 1
 
-        profile.result.slice(1).forEach(function (item) {
+        profile.body.forEach(function (item) {
             temp.push({
                 key: i,
                 Season: item[0],
                 Injury: item[1],
                 From: item[2],
-                until: item[3],
+                Until: item[3],
                 Days: item[4],
                 "Games missed": item[5]
             });
@@ -40,8 +40,8 @@ const Injuries = ({ profile }) => {
                 label: "From"
             },
             {
-                key: "until",
-                label: "until"
+                key: "Until",
+                label: "Until"
             },
             {
                 key: "Days",

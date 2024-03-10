@@ -8,16 +8,12 @@ const Transfers = ({ profile }) => {
         let temp = []
 
         let i = 1
-
-        profile.result.slice(1).forEach(function (item) {
+        profile.body.forEach(function (item) {
             temp.push({
                 key: i,
-                Season: item[0],
-                Date: item[1],
-                Left: item[2],
-                Joined: item[3],
-                "Market Value": item[4],
-                Fee: item[5]
+                Date: item[0],
+                "From To": item[1],
+                Fee: item[2]
             });
             i++;
         });
@@ -29,24 +25,12 @@ const Transfers = ({ profile }) => {
         if (!profile) return []; // Handle case where profile is not yet fetched
         let temp = [
             {
-                key: "Season",
-                label: "Season"
-            },
-            {
                 key: "Date",
                 label: "Date"
             },
             {
-                key: "Left",
-                label: "Left"
-            },
-            {
-                key: "Joined",
-                label: "Joined"
-            },
-            {
-                key: "Market Value",
-                label: "Market Value"
+                key: "From To",
+                label: "From To"
             },
             {
                 key: "Fee",

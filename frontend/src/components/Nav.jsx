@@ -26,11 +26,12 @@ export default function Nav({ player, setLoad, setPicture }) {
     async function fetchAdditionalData() {
       if (profile) {
         setPicture(profile.picture);
-        const id = '/' + profile.id;
+        let id = '/' + profile.id;
         try {
           await helper('stats', player, id);
           await helper('injuries', player, id);
           await helper('value', player, id);
+          id = ''
           await helper('transfers', player, id);
         } catch (error) {
           console.error('Error fetching additional data:', error);
@@ -44,7 +45,7 @@ export default function Nav({ player, setLoad, setPicture }) {
 
   async function helper(request, player, id) {
     try {
-      const response = await fetch('https://transfermarketscrap.onrender.com/app/' + request + '/' + player + id);
+      const response = await fetch('http://127.0.0.1:8000/app/' + request + '/' + player + id);
       if (!response.ok) {
         throw new Error('Failed to fetch profile data');
       }
@@ -61,8 +62,10 @@ export default function Nav({ player, setLoad, setPicture }) {
           break;
         case "value":
           setValue(result)
+          break;
         case "transfers":
           setTransfers(result)
+          break;
       }
       setLoad(false)
     } catch (error) {
@@ -101,7 +104,7 @@ export default function Nav({ player, setLoad, setPicture }) {
         return <Component player={player} setLoad={setLoad} profile={injuries} />;
       } else if (section === "Value") {
         return <Component player={player} setLoad={setLoad} profile={value} />;
-      } else {
+      } else if (section == 'Transfers') {
         return <Component player={player} setLoad={setLoad} profile={transfers} />;
       }
     }

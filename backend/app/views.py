@@ -1,5 +1,8 @@
+import json
+from io import StringIO
 from telnetlib import EC
 
+import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 from django.http import HttpResponse, JsonResponse
@@ -13,9 +16,6 @@ from webdriver_manager.chrome import ChromeDriverManager
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
 }
-
-# service = Service(
-#     executable_path="C:\Program Files\ChromeDriver\chromedriver-win64\chromedriver.exe")
 
 options = webdriver.ChromeOptions()
 options.add_argument("--headless=new")
@@ -54,7 +54,7 @@ def profile(request, name: str) -> JsonResponse:
     prev = ""
     for line in table.text.split('\n'):
         if line.strip():
-            key = line.strip().replace('\xa0', "")
+            key = line.strip()
             key = key.replace(":", "")
             if j % 2 == 0:
                 info[key] = ""
@@ -72,28 +72,14 @@ def profile(request, name: str) -> JsonResponse:
 def injuries(request, name: str, playerId: str):
     name = name.split(" ")
 
-    table = [["Season", "Injury", "From", "until", "Days", "Games missed"]]
+    url = f"https://www.transfermarkt.com/{name[0]}-{name[1]}/verletzungen/spieler/{playerId}/plus/1"
+    response = requests.get(url, headers=headers)
 
-    driver.get(
-        f'https://www.transfermarkt.us/{name[0]}-{name[1]}/verletzungen/spieler/{playerId}/plus/1')
+    # Read only the specific table of interest (index 1)
 
-    WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.XPATH,
-                                        '//*[@id="yw1"]/table/tbody'))
-    )
+    table = pd.read_html(StringIO(response.text))
 
-    rows = driver.find_element(By.XPATH,
-                               '//*[@id="yw1"]/table/tbody').find_elements(
-        By.TAG_NAME, 'tr')
-
-    for row in rows:
-        temp = []
-        for r in row.find_elements(By.TAG_NAME, 'td'):
-            temp.append(r.get_attribute("textContent"))
-        if temp:
-            table.append(temp)
-
-    result = {"result": table}
+    result = {"header": ["Season", "Injury", "From", "Until", "Days", "Games Missed"], "body": table[0].values.tolist()}
 
     return JsonResponse(result)
 
@@ -101,43 +87,28 @@ def injuries(request, name: str, playerId: str):
 def stats(request, name: str, playerId: str):
     name = name.split(" ")
 
-    driver.get(
-        f"https://www.transfermarkt.us/{name[0]}-{name[1]}/leistungsdatendetails/spieler/{playerId}/saison//verein/0/liga/0/wettbewerb//pos/0/trainer_id/0")
-
-    table = {"header": ["Season", "Competition", "Club", "Appearances", "Goals",
+    grid = {"header": ["Season", "Competition", "Appearances", "Goals",
                         "Assists", "Y-YR-R", "Minutes"]}
 
-    body = []
+    url = f"https://www.transfermarkt.com/{name[0]}-{name[1]}/leistungsdatendetails/spieler/{playerId}/saison//verein/0/liga/0/wettbewerb//pos/0/trainer_id/0"
+    response = requests.get(url, headers=headers)
 
-    WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.XPATH,
-                                        '//*[@id="yw1"]/table/tbody'))
-    )
+    # Read only the specific table of interest (index 1)
+    table = pd.read_html(StringIO(response.text))[1]
 
-    rows = driver.find_element(By.XPATH,
-                               '//*[@id="yw1"]/table/tbody').find_elements(
-        By.TAG_NAME, 'tr')
+    result = []
 
-    for row in rows:
-        i = 0
-        temp = []
-        for r in row.find_elements(By.TAG_NAME, 'td'):
-            if i == 3:
-                temp.append(
-                    r.find_element(By.TAG_NAME, 'a').get_attribute("title"))
+    # Loop through each row of the table
+    for index, row in table.iterrows():
+        temp1 = row.values
+        result.append(
+            [temp1[0], temp1[2], temp1[4], temp1[5], temp1[6], temp1[7], temp1[8]])
 
-            elif i == 7:
-                temp.append(r.get_attribute("textContent").replace('\xa0', ""))
+    result.pop()
 
-            elif i != 1:
-                temp.append(r.get_attribute("textContent"))
-            i += 1
-        if temp:
-            body.append(temp)
+    grid["body"] = result
 
-    table["body"] = body
-
-    return JsonResponse(table)
+    return JsonResponse(grid)
 
 
 def value(request, name: str, playerId: str):
@@ -148,46 +119,22 @@ def value(request, name: str, playerId: str):
     return JsonResponse(price)
 
 
-def transfers(request, name: str, playerId: str):
+def transfers(request, name: str):
     name = name.split(" ")
 
-    driver.get(
-        f"https://www.transfermarkt.com/{name[0]}-{name[1]}/transfers/spieler/{playerId}")
+    url = f"https://www.footballtransfers.com/en/players/{name[0]}-{name[1]}/transfer-history"
+    response = requests.get(url, headers=headers)
+    # Read only the specific table of interest (index 1)
+    table = pd.read_html(StringIO(response.text))[0]
+    grid = {"header": ["Date", "From-To", "Fee"]}
+    result = []
+    for index, row in table.iterrows():
+        temp1 = row.values
+        result.append([str(temp1[0]), str(temp1[1]), str(temp1[2])])
+    result.pop()
+    grid["body"] = result
 
-    table = []
-
-    WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.XPATH,
-                                        '//*[@id="main"]/main/div[2]/div[1]/tm-transfer-history/div'))
-    )
-
-    WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.XPATH,
-                                        '//*[@id="main"]/main/div[2]/div[1]/tm-transfer-history/div/h2'))
-    )
-
-    WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.XPATH,
-                                        '//*[@id="main"]/main/div[2]/div[1]/tm-transfer-history/div/div'))
-    )
-
-    rows = driver.find_element(By.XPATH,
-                               '//*[@id="main"]/main/div[2]/div[1]/tm-transfer-history/div')
-
-    rows = rows.find_elements(By.TAG_NAME, 'div')
-
-# //*[@id="main"]/main/div[2]/div[1]/tm-transfer-history/div
-
-    for row in rows:
-        temp = []
-        for r in row.find_elements(By.TAG_NAME, 'div'):
-            temp.append(r.get_attribute("textContent"))
-        if temp:
-            table.append(temp)
-
-    result = {"result": table}
-
-    return JsonResponse(result)
+    return JsonResponse(grid)
 
 
 def findId(firstName, lastName):
@@ -201,3 +148,5 @@ def findId(firstName, lastName):
 
     tag = element.get_attribute("href").split('/')[-1]
     return tag
+
+
