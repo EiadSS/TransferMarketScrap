@@ -31,10 +31,13 @@ def index(request):
 
 
 def profile(request, name: str) -> JsonResponse:
-    name = name.split(" ")
-    firstName, lastName = name[0], name[1]
-    playerId = findId(firstName, lastName)
-    url = f"https://www.transfermarkt.com/{firstName}-{lastName}/profil/spieler/{playerId}"
+    temp = name.split(" ")
+    playerId = findId(name)
+    if len(temp) > 1:
+        firstName, lastName = temp[0], temp[1]
+        url = f"https://www.transfermarkt.com/{firstName}-{lastName}/profil/spieler/{playerId}"
+    else:
+        url = f"https://www.transfermarkt.com/{name}/profil/spieler/{playerId}"
 
     page = requests.get(url, headers=headers)
     soup = BeautifulSoup(page.text, "html.parser")
@@ -137,9 +140,9 @@ def transfers(request, name: str):
     return JsonResponse(grid)
 
 
-def findId(firstName, lastName):
+def findId(name):
     driver.get(
-        f"https://www.transfermarkt.us/schnellsuche/ergebnis/schnellsuche?query={firstName}+{lastName}")
+        f"https://www.transfermarkt.us/schnellsuche/ergebnis/schnellsuche?query={name}")
 
     element = WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.XPATH,
