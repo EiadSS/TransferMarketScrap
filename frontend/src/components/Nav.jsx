@@ -45,7 +45,7 @@ export default function Nav({ player, setLoad, setPicture }) {
 
   async function helper(request, player, id) {
     try {
-      const response = await fetch('http://127.0.0.1:8000/app/' + request + '/' + player + id);
+      const response = await fetch('https://transfermarketscrap.onrender.com/app/' + request + '/' + player + id);
       if (!response.ok) {
         throw new Error('Failed to fetch profile data');
       }
