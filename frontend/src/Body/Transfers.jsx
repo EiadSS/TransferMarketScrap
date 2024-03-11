@@ -12,8 +12,10 @@ const Transfers = ({ profile }) => {
             temp.push({
                 key: i,
                 Date: item[0],
-                "From To": item[1],
-                Fee: item[2]
+                "From": item[1],
+                "To": item[2],
+                "Market Value": item[3],
+                Fee: item[4]
             });
             i++;
         });
@@ -29,8 +31,16 @@ const Transfers = ({ profile }) => {
                 label: "Date"
             },
             {
-                key: "From To",
-                label: "From To"
+                key: "From",
+                label: "From"
+            },
+            {
+                key: "To",
+                label: "To"
+            },
+            {
+                key: "Market Value",
+                label: "Market Value"
             },
             {
                 key: "Fee",
