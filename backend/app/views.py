@@ -113,20 +113,28 @@ def value(request, name: str, playerId: str):
     return JsonResponse(price)
 
 
-def transfers(request, name: str):
-    name = name.split(" ")
+def transfers(request, name: str, playerId: str):
+    driver.get(
+        f"https://www.transfermarkt.us/{name}/transfers/spieler/{playerId}")
 
-    url = f"https://www.footballtransfers.com/en/players/{name[0]}-{name[1]}/transfer-history"
-    response = requests.get(url, headers=headers)
-    # Read only the specific table of interest (index 1)
-    table = pd.read_html(StringIO(response.text))[0]
-    grid = {"header": ["Date", "From-To", "Fee"]}
+    WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.XPATH,
+                                        '//*[@id="main"]/main/div[2]/div[1]/tm-transfer-history/div/div[2]'))
+    )
+    response = driver.find_element(By.XPATH,
+                                   '//*[@id="main"]/main/div[2]/div[1]/tm-transfer-history/div')
+
+    soup = BeautifulSoup(response.get_attribute("outerHTML"), "html.parser")
+    table = soup.find_all('div',
+                          {"class": "grid tm-player-transfer-history-grid"})
     result = []
-    for index, row in table.iterrows():
-        temp1 = row.values
-        result.append([str(temp1[0]), str(temp1[1]), str(temp1[2])])
-    result.pop()
-    grid["body"] = result
+    for t in table:
+        temp = []
+        for i in t.find_all('div'):
+            temp.append(i.text)
+        result.append(temp)
+
+    grid = {"header": ["Season", "Date", "From", "To", "Market Value", "Fee"], "body": result}
 
     return JsonResponse(grid)
 
