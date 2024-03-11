@@ -31,7 +31,6 @@ export default function Nav({ player, setLoad, setPicture }) {
           await helper('stats', player, id);
           await helper('injuries', player, id);
           await helper('value', player, id);
-          id = ''
           await helper('transfers', player, id);
         } catch (error) {
           console.error('Error fetching additional data:', error);
