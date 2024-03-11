@@ -17,7 +17,6 @@ export default function Nav({ player, setLoad, setPicture }) {
   const [transfers, setTransfers] = useState(null)
   const [error, setError] = useState(false)
 
-
   useEffect(() => {
     fetchData();
   }, [player]);
@@ -69,12 +68,10 @@ export default function Nav({ player, setLoad, setPicture }) {
       setLoad(false)
     } catch (error) {
       console.error('Error fetching data:', error);
-      setError(true)
     }
   }
 
   async function fetchData() {
-    setError(false)
     setProfile(null)
     setStats(null)
     setInjuries(null)
