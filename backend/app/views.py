@@ -31,13 +31,8 @@ def index(request):
 
 
 def profile(request, name: str) -> JsonResponse:
-    temp = name.split(" ")
     playerId = findId(name)
-    if len(temp) > 1:
-        firstName, lastName = temp[0], temp[1]
-        url = f"https://www.transfermarkt.com/{firstName}-{lastName}/profil/spieler/{playerId}"
-    else:
-        url = f"https://www.transfermarkt.com/{name}/profil/spieler/{playerId}"
+    url = f"https://www.transfermarkt.com/{name}/profil/spieler/{playerId}"
 
     page = requests.get(url, headers=headers)
     soup = BeautifulSoup(page.text, "html.parser")
@@ -73,9 +68,7 @@ def profile(request, name: str) -> JsonResponse:
 
 
 def injuries(request, name: str, playerId: str):
-    name = name.split(" ")
-
-    url = f"https://www.transfermarkt.com/{name[0]}-{name[1]}/verletzungen/spieler/{playerId}/plus/1"
+    url = f"https://www.transfermarkt.com/{name}/verletzungen/spieler/{playerId}/plus/1"
     response = requests.get(url, headers=headers)
 
     # Read only the specific table of interest (index 1)
@@ -88,12 +81,10 @@ def injuries(request, name: str, playerId: str):
 
 
 def stats(request, name: str, playerId: str):
-    name = name.split(" ")
-
     grid = {"header": ["Season", "Competition", "Appearances", "Goals",
                         "Assists", "Y-YR-R", "Minutes"]}
 
-    url = f"https://www.transfermarkt.com/{name[0]}-{name[1]}/leistungsdatendetails/spieler/{playerId}/saison//verein/0/liga/0/wettbewerb//pos/0/trainer_id/0"
+    url = f"https://www.transfermarkt.com/{name}/leistungsdatendetails/spieler/{playerId}/saison//verein/0/liga/0/wettbewerb//pos/0/trainer_id/0"
     response = requests.get(url, headers=headers)
 
     # Read only the specific table of interest (index 1)
